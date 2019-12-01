@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
-    class Program
+    class Coord3d:Coord2d
     {
-        static void Main(string[] args)
-        {
-            Core game = new Core();
-            game.Run();
-        }
     }
 }

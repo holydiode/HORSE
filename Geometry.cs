@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
-    class Program
+    class Geometry
     {
-        static void Main(string[] args)
-        {
-            Core game = new Core();
-            game.Run();
-        }
+        private List<Coord2d> points;
     }
 }

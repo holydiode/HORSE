@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
-    class Program
+    class Scene
     {
-        static void Main(string[] args)
+        private List<GameObject> staticObjects;
+    
+        public Scene()
         {
-            Core game = new Core();
-            game.Run();
+            staticObjects = new List<GameObject>();
+
         }
     }
+
 }
