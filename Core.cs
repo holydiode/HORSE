@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
+
+
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
+
 
 namespace HORSE
 {
@@ -12,6 +20,8 @@ namespace HORSE
         private static GameObject currentObject;
         internal static GameObject CurrentObject { get => currentObject; set => currentObject = value; }
         internal static Scene MainScene { get => mainScene; set => mainScene = value; }
+
+        private GameWindow window;
 
         public Core()
         {
@@ -23,7 +33,12 @@ namespace HORSE
 
         public void Run()
         {
+            window = new GameWindow();
+            window.RenderFrame += (sender, e) =>
+            {
 
+            };
+            window.Run();
         }
     }
 

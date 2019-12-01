@@ -15,6 +15,10 @@ namespace HORSE
             staticObjects = new List<GameObject>();
 
         }
+
+        public void Add(GameObject app) {
+            staticObjects.Add(app);
+        }
     }
 
 }

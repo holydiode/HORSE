@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
-    class Coord3d:Coord2d
+    class Coord3d
     {
-    }
+    };
+
+
 }
