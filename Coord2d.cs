@@ -8,8 +8,8 @@ namespace HORSE
 {
     class Coord2d
     {
-        private float x;
-        private float y;
+        protected float x;
+        protected float y;
 
         public float X { get => x; set => x = value; }
         public float Y { get => y; set => y = value; }
@@ -18,5 +18,15 @@ namespace HORSE
             this.x = x;
             this.y = y;
         }
+
+        public Coord2d() {
+            this.x = x;
+            this.y = y;
+        }
+
+        public static Coord2d operator +(Coord2d a, Coord2d b)
+        {
+            return new Coord2d(a.X + b.X, a.Y + b.Y);
+        } 
     }
 }

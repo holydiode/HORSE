@@ -16,6 +16,8 @@ namespace HORSE
 
         }
 
+        internal List<GameObject> StaticObjects { get => staticObjects; set => staticObjects = value; }
+
         public void Add(GameObject app) {
             staticObjects.Add(app);
         }

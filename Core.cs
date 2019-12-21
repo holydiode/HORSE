@@ -20,8 +20,9 @@ namespace HORSE
         private static GameObject currentObject;
         internal static GameObject CurrentObject { get => currentObject; set => currentObject = value; }
         internal static Scene MainScene { get => mainScene; set => mainScene = value; }
+        public static GameWindow Window { get => window; set => window = value; }
 
-        private GameWindow window;
+        private static GameWindow window;
 
         public Core()
         {
@@ -30,14 +31,20 @@ namespace HORSE
         }
 
 
-
         public void Run()
         {
             window = new GameWindow();
+
             window.RenderFrame += (sender, e) =>
             {
-
+                foreach(GameObject curent in mainScene.StaticObjects)
+                {
+                    currentObject = curent;
+                    currentObject.Drow();
+                }
+                window.SwapBuffers();
             };
+
             window.Run();
         }
     }
