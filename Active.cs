@@ -11,6 +11,8 @@ namespace HORSE
 
         private List<Activity> activities;
 
+        internal List<Activity> Activities { get => activities; set => activities = value; }
+
         public Active() : base()
         {
             activities = new List<Activity>();
@@ -25,27 +27,35 @@ namespace HORSE
 
         public void SetTopDownBehaivor(float speed)
         {
-            activities.Add(new KeyHold("w", () =>  this.Position.Y += speed));
-            activities.Add(new KeyHold("s", () =>  this.Position.Y -= speed));
-            activities.Add(new KeyHold("a", () =>  this.Position.X -= speed));
-            activities.Add(new KeyHold("d", () =>  this.Position.X += speed));
+            activities.Add(new KeyHold("w", () => this.Position.Y += speed));
+            activities.Add(new KeyHold("s", () => this.Position.Y -= speed));
+            activities.Add(new KeyHold("a", () => this.Position.X -= speed));
+            activities.Add(new KeyHold("d", () => this.Position.X += speed));
         }
 
-        public void SetTeleportBorderBehaivor()
+        public void SetArcanoidBehaivor(float speed)
         {
-            activities.Add(new FrameActivity(() => { if (this.Position.Y < -1) this.Position.Y = 1f; }));
-            activities.Add(new FrameActivity(() => { if (this.Position.X < -1) this.Position.X = 1f; }));
-            activities.Add(new FrameActivity(() => { if (this.Position.Y > 1) this.Position.Y = -1f; }));
-            activities.Add(new FrameActivity(() => { if (this.Position.X > 1) this.Position.X = -1f; }));
+            activities.Add(new KeyHold("a", () => this.Position.X -= speed));
+            activities.Add(new KeyHold("d", () => this.Position.X += speed));
         }
 
-        public void SetSolidBoderBehaivor()
+        public void SetTeleportBorderRule()
         {
-            activities.Add(new FrameActivity(() => { if (this.Position.Y < -1) this.Position.Y = -1f; }));
-            activities.Add(new FrameActivity(() => { if (this.Position.X < -1) this.Position.X = -1f; }));
-            activities.Add(new FrameActivity(() => { if (this.Position.Y > 1) this.Position.Y = 1f; }));
-            activities.Add(new FrameActivity(() => { if (this.Position.X > 1) this.Position.X = 1f; }));
+            activities.Add(new FrameActivity(() => { if (this.GetPosition().Y < -1) this.Position.Y = 1f; }));
+            activities.Add(new FrameActivity(() => { if (this.GetPosition().X < -1) this.Position.X = 1f; }));
+            activities.Add(new FrameActivity(() => { if (this.GetPosition().Y > 1) this.Position.Y = -1f; }));
+            activities.Add(new FrameActivity(() => { if (this.GetPosition().X > 1) this.Position.X = -1f; }));
         }
+
+        public void SetSolidBoderRule()
+        {
+            activities.Add(new FrameActivity(() => { if (this.Hitbox.RightBorder + this.GetPosition().X > 1) { this.Position.X -=  this.GetPosition().X + this.Hitbox.RightBorder - 1; } }));
+            activities.Add(new FrameActivity(() => { if (this.Hitbox.LeftBorder + this.GetPosition().X < -1) { this.Position.X -= this.Hitbox.LeftBorder + this.GetPosition().X + 1; } }));
+            activities.Add(new FrameActivity(() => { if (this.Hitbox.UpBorder + this.GetPosition().Y > 1) { this.Position.Y -= this.Hitbox.UpBorder + this.GetPosition().Y - 1; } }));
+            activities.Add(new FrameActivity(() => { if (this.Hitbox.BottomBorder + this.GetPosition().Y < -1) { this.Position.Y -= this.Hitbox.BottomBorder + this.GetPosition().Y + 1; } }));
+        }
+
+
 
 
         public void Run()

@@ -38,6 +38,9 @@ namespace HORSE
             points.Add(new Coord2d(0, 0));
             points.Add(new Coord2d(0, point.Y));
 
+
+            RecountBorder();
+
             this.complexity = 4;
         }
 

@@ -13,7 +13,6 @@ namespace HORSE
             this.Script = Script;
         }
 
-
         protected override bool Check()
         {
             return true;

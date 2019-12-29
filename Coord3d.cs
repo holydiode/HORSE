@@ -15,10 +15,19 @@ namespace HORSE
             this.z = z;
         }
 
+        public float Z { get => z; set => z = value; }
+
         public Coord2d LowerDegree()
         {
             return new Coord2d(this.x, this.y);
         }
+
+
+        public static Coord3d operator +(Coord3d a, Coord2d b)
+        {
+            return new Coord3d(a.X + b.X, a.Y + b.Y, a.Z);
+        }
+
 
     };
 

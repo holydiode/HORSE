@@ -23,12 +23,22 @@ namespace HORSE
 
         public TextureFigure()
         {
-            startPoint = new Coord2d(0, 0); 
+            startPoint = new Coord2d(0, 0);
             border = new Geometry();
-            border.Square(new Coord2d(0.5f, 0.5f));
+            border.Square(new Coord2d(0.2f, 0.2f));
             fillColor = Color.White;
             borderColor = Color.Red;
             borderWidth = 100;
+        }
+       
+
+
+        public TextureFigure(Geometry border){
+                startPoint = new Coord2d(0, 0);
+                this.border = border;
+                fillColor = Color.White;
+                borderColor = Color.Red;
+                borderWidth = 100;
         }
 
         public override void Drow() {

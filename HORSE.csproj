@@ -50,6 +50,8 @@
     <Compile Include="Active.cs" />
     <Compile Include="Activity.cs" />
     <Compile Include="Animation.cs" />
+    <Compile Include="Border.cs" />
+    <Compile Include="ColissionActivity.cs" />
     <Compile Include="Coord2d.cs" />
     <Compile Include="Coord3d.cs" />
     <Compile Include="Core.cs" />
@@ -61,6 +63,8 @@
     <Compile Include="MouseActivity.cs" />
     <Compile Include="MouseClick.cs" />
     <Compile Include="MouseHold.cs" />
+    <Compile Include="NotColission.cs" />
+    <Compile Include="Physics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />

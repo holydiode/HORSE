@@ -6,22 +6,55 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
+    class Platform : Physics
+    {
+        public Platform() : base()
+        {
+            Geometry cheracter = new Geometry();
+            cheracter.Square(new Coord2d(0.2f, 0.02f));
+            this.Texture = new TextureFigure(cheracter);
+            this.Hitbox.Square(new Coord2d(0.2f, 0.02f));
+        }
+    };
 
-    class TestObject: Active{
-        public TestObject() : base()
+    class Player: Platform{
+        public Player() : base()
         {
 
-            this.SetTopDownBehaivor(0.01f);
-            this.SetSolidBoderBehaivor();
-
+            this.SetArcanoidBehaivor(0.05f);
+            this.SetSolidBoderRule();
+            this.Position = new Coord3d(0, -0.90f, 0);
         }
-
-        private void move()
-        {
-            this.Position.X += 0.01f;
-        }
-
     }
+
+    class Enemy : Platform
+    {
+        public Enemy() : base()
+        {
+            this.Position = new Coord3d(0, 0.90f, 0);
+        }
+    }
+
+
+    class Ball: Physics
+    {
+        public Ball() : base() {
+
+
+            Geometry cheracter = new Geometry();
+            cheracter.Square(new Coord2d(0.02f, 0.02f));
+            this.Texture = new TextureFigure(cheracter);
+
+            this.Hitbox.Square(new Coord2d(0.02f, 0.02f));
+            this.Position = new Coord3d(0, 0, 0);
+
+            this.Speed = new Coord2d(-0.008f, -0.005f);
+
+            this.SetBallBorderRule();
+
+        }
+    }
+
 
 
 
@@ -33,10 +66,16 @@ namespace HORSE
         static void Main(string[] args)
         {
             Core game = new Core();
-            TestObject pix = new TestObject();
+            Player player = new Player();
+            Enemy enemy = new Enemy();
+            Ball ball = new Ball();
             
 
-            Core.MainScene.Add(pix);
+            
+            Core.MainScene.Add(ball);
+            Core.MainScene.Add(player);
+            Core.MainScene.Add(enemy);
+
             game.Run();
         }
     }

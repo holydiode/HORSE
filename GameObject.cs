@@ -18,6 +18,7 @@ namespace HORSE
 
         internal Coord3d Position { get => position; set => position = value; }
         internal Texture Texture { get => texture; set => texture = value; }
+        internal Geometry Hitbox { get => hitbox; set => hitbox = value; }
 
         public GameObject()
         {

@@ -20,6 +20,5 @@ namespace HORSE
             return (keyboard[button]);
         }
 
-
     }
 }
