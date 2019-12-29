@@ -34,11 +34,21 @@ namespace HORSE
         public void Run()
         {
             window = new GameWindow();
+            
 
             window.RenderFrame += (sender, e) =>
             {
-                foreach(GameObject curent in mainScene.StaticObjects)
+                foreach (Active curent in mainScene.DinamicObjects)
                 {
+                    currentObject = curent;
+                    curent.Run();
+                }
+
+                foreach (GameObject curent in mainScene.StaticObjects)
+                {
+                    GL.ClearColor(Color4.Black);
+                    GL.Clear(ClearBufferMask.ColorBufferBit);
+
                     currentObject = curent;
                     currentObject.Drow();
                 }

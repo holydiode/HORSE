@@ -6,17 +6,37 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
+
+    class TestObject: Active{
+        public TestObject() : base()
+        {
+
+            this.SetTopDownBehaivor(0.01f);
+            this.SetSolidBoderBehaivor();
+
+        }
+
+        private void move()
+        {
+            this.Position.X += 0.01f;
+        }
+
+    }
+
+
+
     class Program
     {
+
+
+
         static void Main(string[] args)
         {
             Core game = new Core();
-            GameObject pix = new GameObject();
-            GameObject pix2 = new GameObject();
-            pix.Position = new Coord3d(0.2f, 0.5f, 0.3f);
-            pix2.Position = new Coord3d(-0.2f, -0.5f, -0.3f);
+            TestObject pix = new TestObject();
+            
+
             Core.MainScene.Add(pix);
-            Core.MainScene.Add(pix2);
             game.Run();
         }
     }
