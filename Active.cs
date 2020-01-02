@@ -21,8 +21,9 @@ namespace HORSE
 
         public void SetBehavior(Activity activity)
         {
-            activities.Clear();
             activities.Add(activity);
+
+            activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; }); ;
         }
 
         public void SetTopDownBehaivor(float speed)
@@ -31,12 +32,16 @@ namespace HORSE
             activities.Add(new KeyHold("s", () => this.Position.Y -= speed));
             activities.Add(new KeyHold("a", () => this.Position.X -= speed));
             activities.Add(new KeyHold("d", () => this.Position.X += speed));
+
+            activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
         public void SetArcanoidBehaivor(float speed)
         {
             activities.Add(new KeyHold("a", () => this.Position.X -= speed));
             activities.Add(new KeyHold("d", () => this.Position.X += speed));
+
+            activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
         public void SetTeleportBorderRule()
@@ -45,6 +50,8 @@ namespace HORSE
             activities.Add(new FrameActivity(() => { if (this.GetPosition().X < -1) this.Position.X = 1f; }));
             activities.Add(new FrameActivity(() => { if (this.GetPosition().Y > 1) this.Position.Y = -1f; }));
             activities.Add(new FrameActivity(() => { if (this.GetPosition().X > 1) this.Position.X = -1f; }));
+
+            activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
         public void SetSolidBoderRule()
@@ -53,6 +60,8 @@ namespace HORSE
             activities.Add(new FrameActivity(() => { if (this.Hitbox.LeftBorder + this.GetPosition().X < -1) { this.Position.X -= this.Hitbox.LeftBorder + this.GetPosition().X + 1; } }));
             activities.Add(new FrameActivity(() => { if (this.Hitbox.UpBorder + this.GetPosition().Y > 1) { this.Position.Y -= this.Hitbox.UpBorder + this.GetPosition().Y - 1; } }));
             activities.Add(new FrameActivity(() => { if (this.Hitbox.BottomBorder + this.GetPosition().Y < -1) { this.Position.Y -= this.Hitbox.BottomBorder + this.GetPosition().Y + 1; } }));
+
+            activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
 

@@ -43,6 +43,22 @@ namespace HORSE
             }
         }
 
+        public bool PointInObject(Coord2d point)
+        {
+            bool c = false;
+            for (int i = 0, j = hitbox.Complexity - 1; i < hitbox.Complexity; j = i++)
+            {
+                if ((( (Hitbox.Points[i].Y + this.GetPosition().Y <= point.Y)
+                    && (point.Y < Hitbox.Points[j].Y + this.GetPosition().Y))
+                    || ((Hitbox.Points[j].Y + this.GetPosition().Y <= point.Y)
+                    && (point.Y < Hitbox.Points[i].Y + this.GetPosition().Y)))
+                    && (((Hitbox.Points[j].Y + this.GetPosition().Y - (Hitbox.Points[i].Y + this.GetPosition().Y)) != 0)
+                    && (point.X > ((Hitbox.Points[j].X + this.GetPosition().X - (Hitbox.Points[i].X + this.GetPosition().X)) * (point.Y - (Hitbox.Points[i].Y + this.GetPosition().Y)) / (Hitbox.Points[j].Y + this.GetPosition().Y - (Hitbox.Points[i].Y + this.GetPosition().Y)) + Hitbox.Points[i].X + this.GetPosition().X))))
+                    c = !c;
+            }
+            return c;
+        }
+
 
         public void Drow() {
             texture.Drow();

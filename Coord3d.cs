@@ -8,14 +8,14 @@ namespace HORSE
 {
     class Coord3d:Coord2d
     {
-        private float z;
+        private double z;
 
-        public Coord3d(float x, float y, float z):base(x , y)
+        public Coord3d(double x, double y, double z):base(x , y)
         {
             this.z = z;
         }
 
-        public float Z { get => z; set => z = value; }
+        public double Z { get => z; set => z = value; }
 
         public Coord2d LowerDegree()
         {

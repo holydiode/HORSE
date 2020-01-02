@@ -33,7 +33,7 @@ namespace HORSE
                 this.button = Key.D;
             }
 
-
+            this.propity = 5;
             this.Script = Script;
             keyboard = Keyboard.GetState();
 

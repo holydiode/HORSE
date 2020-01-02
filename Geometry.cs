@@ -10,20 +10,19 @@ namespace HORSE
     {
         private List<Coord2d> points;
 
-        private float leftBorder;
-        private float rightBorder;
-        private float upBorder;
-        private float bottomBorder;
-        private float middleBorder;
+        private double leftBorder;
+        private double rightBorder;
+        private double upBorder;
+        private double bottomBorder;
+        private double middleBorder;
 
         private int complexity;
+        private readonly float X;
 
-
-
-        public float LeftBorder { get => leftBorder; set => leftBorder = value; }
-        public float RightBorder { get => rightBorder; set => rightBorder = value; }
-        public float UpBorder { get => upBorder; set => upBorder = value; }
-        public float BottomBorder { get => bottomBorder; set => bottomBorder = value; }
+        public double LeftBorder { get => leftBorder; set => leftBorder = value; }
+        public double RightBorder { get => rightBorder; set => rightBorder = value; }
+        public double UpBorder { get => upBorder; set => upBorder = value; }
+        public double BottomBorder { get => bottomBorder; set => bottomBorder = value; }
         public int Complexity { get => complexity; set => complexity = value; }
         internal List<Coord2d> Points { get => points; set => points = value; }
 
@@ -43,6 +42,53 @@ namespace HORSE
 
             this.complexity = 4;
         }
+
+
+        public List<Coord2d> FindNearPoint(int count, Coord2d point)
+        {
+            List<Coord2d> nearPoint = new List<Coord2d>();
+
+            List<Coord2d> sortedPoint = new List<Coord2d>();
+
+            foreach(Coord2d currentPoint in this.Points)
+            {
+                sortedPoint.Add(currentPoint);
+            }
+
+            sortedPoint.Sort((Coord2d a, Coord2d b) => { if (a.len(point) > b.len(point)) return 1; else return 0; });
+
+
+            for (int i = 0; i < count; i++)
+            {
+                nearPoint.Add(sortedPoint[i]);
+            }
+
+            return nearPoint;
+        }
+
+
+        public List<Coord2d> FindNearStraight(Coord2d point, Coord2d move)
+        {
+
+            List<Coord2d> straight = new List<Coord2d>();
+            double min = 2; 
+
+            for (int i = 0, j = this.Complexity - 1; i < this.Complexity; j = i++)
+            {
+                double len = Math.Abs((Points[j].Y - Points[i].Y) * point.X - (Points[j].X - Points[i].X) * point.Y + (Points[j].X + move.X) * (Points[i].Y + move.Y) - (Points[j].Y + move.Y) * (Points[i].X + move.X)) / Math.Sqrt((Points[j].Y - Points[i].Y) * (Points[j].Y - Points[i].Y) + (Points[j].X - Points[i].X) * (Points[j].X - Points[i].X));
+                if (len < min)
+                {
+                    min = len;
+                    straight.Clear();
+                    straight.Add(Points[i]);
+                    straight.Add(Points[j]);
+                }
+            }
+
+            return straight;
+        }
+
+
 
         public void RecountBorder()
         {
@@ -73,9 +119,9 @@ namespace HORSE
             }
         }
 
-        public float[] GeometryToArrat()
+        public double[] GeometryToArrat()
         {
-            float[] array = new float[this.complexity * 3];
+            double[] array = new double[this.complexity * 3];
             int i = 0;
             foreach (Coord2d point in this.points){
                 array[i*3] = point.X;
@@ -83,8 +129,8 @@ namespace HORSE
                 array[i*3 + 2] = 0;
                 i++;
             }
-
             return array;
         }
+
     }
 }

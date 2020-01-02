@@ -60,10 +60,11 @@
     <Compile Include="Geometry.cs" />
     <Compile Include="KeyBoardActity.cs" />
     <Compile Include="KeyHold.cs" />
+    <Compile Include="KeyUp.cs" />
     <Compile Include="MouseActivity.cs" />
     <Compile Include="MouseClick.cs" />
     <Compile Include="MouseHold.cs" />
-    <Compile Include="NotColission.cs" />
+    <Compile Include="Colission.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

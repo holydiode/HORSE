@@ -10,15 +10,15 @@ namespace HORSE
     {
         protected GameObject gameObject;
         protected Type type;
-        protected Border border;
 
-        public ColissionActivity(Border border, script Script)
+        public ColissionActivity(GameObject gameObject, script Script)
         {
-            this.border = border;
+            this.gameObject = gameObject;
             this.Script = Script;
 
             type = null;
-            gameObject = null;
+
+            this.propity = 50;
 
         }
 
