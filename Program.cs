@@ -16,9 +16,8 @@ namespace HORSE
     {
         public static Physics linkBall;
 
-        protected  HPbar HPBar;
+        protected HPbar HPBar;
         protected UPbar UPBar;
-        protected Stick stick;
 
 
         public Platform() : base()
@@ -32,17 +31,31 @@ namespace HORSE
             HPBar = new HPbar();
             UPBar = new UPbar();
 
-            this.SetBehavior(new Colission(linkBall, () => {
-                if(((TextureFigure)this.Texture).FillColor == Color.Red)
-                    ((TextureFigure)this.Texture).FillColor = Color.White;
-                else
-                    ((TextureFigure)this.Texture).FillColor = Color.Red; }));
+            this.SetBehavior(new Colission(linkBall, () =>
+            {
+                if (this.HPBar.HP < 100)
+                {
+                    this.HPBar.HP += 5;
+                }
+            }
+            ));
 
 
             this.SetChild(HPBar);
             this.SetChild(UPBar);
         }
-    };
+    }
+
+    class Barrow : Platform
+    {
+        public Barrow() : base()
+        {
+           this.Hitbox.RegularPolygon(32, 0.13);
+
+
+           this.children.Clear();
+        }
+    }
 
 
     class Player: Platform{
@@ -57,9 +70,7 @@ namespace HORSE
             this.SetBehavior(new KeyHold("e", () => { if (UPBar.UP >= 20) { UPBar.UP -= 20; linkBall.Speed *= (linkBall.Speed.len() + 0.001) / linkBall.Speed.len(); } }));
             this.SetBehavior(new KeyHold("q", () => { if (UPBar.UP >= 20) { UPBar.UP -= 20; linkBall.Speed *= (linkBall.Speed.len() - 0.001) / linkBall.Speed.len(); } }));
 
-            this.stick = new Stick();
 
-            this.SetChild(stick);
         }
     }
 
@@ -98,7 +109,7 @@ namespace HORSE
 
     class HPbar : Active
     {
-        private double HP;
+        private double hP;
 
         public HPbar() : base()
         {
@@ -111,7 +122,14 @@ namespace HORSE
             ((TextureFigure)this.Texture).FillColor = Color.Green;
             ((TextureFigure)this.Texture).BorderColor = Color.Green;
 
+
+
+            this.SetBehavior(new FrameActivity(() => { this.Hitbox.Square(new Coord2d(0.005, -0.15 * HP / 100)); if (HP > 0) HP -= 0.01; }));
+
+
         }
+
+        public double HP { get => hP; set => hP = value; }
     }
 
 
@@ -140,17 +158,6 @@ namespace HORSE
         }
     }
 
-    class Stick: GameObject
-    {
-        public Stick() : base()
-        {
-            this.Hitbox.Square(new Coord2d(0.005, -0.15));
-            this.Texture = new TextureFigure(this.Hitbox);
-
-            ((TextureFigure)this.Texture).FillColor = Color.White;
-            ((TextureFigure)this.Texture).BorderColor = Color.White;
-        }
-    }
 
 
     class Center: GravityPoint
@@ -176,6 +183,8 @@ namespace HORSE
             Platform.linkBall = ball;
             UPbar.linkball = ball;
 
+            Barrow barrow = new Barrow();
+
 
             Player player = new Player();
             Enemy enemy = new Enemy();
@@ -187,6 +196,7 @@ namespace HORSE
             Core.MainScene.Add(player);
             Core.MainScene.Add(enemy);
             Core.MainScene.Add(center);
+            Core.MainScene.Add(barrow);
 
             game.Run();
         }

@@ -103,6 +103,15 @@ namespace HORSE
                             }
 
 
+                            foreach (Activity currentivent in currentObject.Activities)
+                            {
+                                if (currentivent is ColissionActivity && ((ColissionActivity)currentivent).GameObject == this)
+                                {
+                                    currentivent.Script();
+                                }
+                            }
+
+
                         }
                     }
                 }
