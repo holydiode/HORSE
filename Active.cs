@@ -73,6 +73,14 @@ namespace HORSE
             {
                 current.Run();
             }
+
+            foreach (GameObject currentObject in children)
+            {
+                if(currentObject is Active)
+                {
+                    ((Active)currentObject).Run();
+                }
+            }
         }
 
 

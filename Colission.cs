@@ -17,11 +17,11 @@ namespace HORSE
 
         protected override bool Check()
         {
-            if(gameObject != null)
+            if(GameObject != null)
             {
-                foreach(Coord2d currentPoint in this.gameObject.Hitbox.Points)
+                foreach(Coord2d currentPoint in this.GameObject.Hitbox.Points)
                 {
-                    if (Core.CurrentObject.PointInObject(currentPoint + this.gameObject.GetPosition()))
+                    if (Core.CurrentObject.PointInObject(currentPoint + this.GameObject.GetPosition()))
                     {
                         return true;
                     }
@@ -29,7 +29,7 @@ namespace HORSE
 
                 foreach (Coord2d currentPoint in Core.CurrentObject.Hitbox.Points)
                 {
-                    if (this.gameObject.PointInObject(currentPoint + Core.CurrentObject.GetPosition() ))
+                    if (this.GameObject.PointInObject(currentPoint + Core.CurrentObject.GetPosition() ))
                     {
                         return true;
                     }

@@ -56,6 +56,12 @@ namespace HORSE
             return new Coord2d(a.X + b.X, a.Y + b.Y);
         }
 
+        public static Coord2d operator -(Coord2d a, Coord2d b)
+        {
+            return new Coord2d(a.X - b.X, a.Y - b.Y);
+        }
+
+
         public static Coord2d operator /(Coord2d a, double b)
         {
             return new Coord2d(a.X / b, a.Y / b);
@@ -67,6 +73,16 @@ namespace HORSE
             return new Coord2d(a.X * b, a.Y * b);
         }
 
+        public static Coord2d operator *( double b, Coord2d a)
+        {
+            return new Coord2d(a.X * b, a.Y * b);
+        }
+
+
+        public static double operator *(Coord2d a, Coord2d b)
+        {
+            return (a.X * b.X + a.Y * b.Y);
+        }
 
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using OpenTK.Input;
 
+using System.Drawing;
+
+
 
 namespace HORSE  
 {
@@ -13,32 +16,62 @@ namespace HORSE
     {
         public static Physics linkBall;
 
+        protected  HPbar HPBar;
+        protected UPbar UPBar;
+        protected Stick stick;
+
+
         public Platform() : base()
         {
-            Geometry cheracter = new Geometry();
-            cheracter.Square(new Coord2d(0.2f, 0.02f));
-            this.Texture = new TextureFigure(cheracter);
-            this.Hitbox.Square(new Coord2d(0.2f, 0.02f));
+
+            this.Hitbox.RegularPolygon(3, 0.13);
+            this.Texture = new TextureFigure(this.Hitbox);
             this.SetSolidBoderRule();
-            this.mass = 0;
-            // this.SetBehavior(new Colission(linkBall, () => { linkBall.Speed.Y = -1 * (linkBall.Speed.Y + 0.0001f); }));
+            this.Mass = 0;
+
+            HPBar = new HPbar();
+            UPBar = new UPbar();
+
+            this.SetBehavior(new Colission(linkBall, () => {
+                if(((TextureFigure)this.Texture).FillColor == Color.Red)
+                    ((TextureFigure)this.Texture).FillColor = Color.White;
+                else
+                    ((TextureFigure)this.Texture).FillColor = Color.Red; }));
+
+
+            this.SetChild(HPBar);
+            this.SetChild(UPBar);
         }
     };
+
 
     class Player: Platform{
         public Player() : base()
         {
-            this.SetArcanoidBehaivor(0.03f);
-            this.Position = new Coord3d(0, -0.90f, 0);
+            this.SetArcanoidBehaivor(0.01f);
+            this.Position = new Coord3d(0, -0.70f, 0);
+
+            this.SetBehavior(new KeyHold("w", () => this.Rotate(0.1)));
+            this.SetBehavior(new KeyHold("s", () => this.Rotate(-0.1)));
+
+            this.SetBehavior(new KeyHold("e", () => { if (UPBar.UP >= 20) { UPBar.UP -= 20; linkBall.Speed *= (linkBall.Speed.len() + 0.001) / linkBall.Speed.len(); } }));
+            this.SetBehavior(new KeyHold("q", () => { if (UPBar.UP >= 20) { UPBar.UP -= 20; linkBall.Speed *= (linkBall.Speed.len() - 0.001) / linkBall.Speed.len(); } }));
+
+            this.stick = new Stick();
+
+            this.SetChild(stick);
         }
     }
+
 
     class Enemy : Platform
     {
         public Enemy() : base()
         {
-            this.SetBehavior(new FrameActivity(() => { this.Position.X = linkBall.Position.X - 0.1f;}, 9));
-            this.Position = new Coord3d(0, 0.90f, 0);
+            this.SetBehavior(new FrameActivity(() => { if (this.Position.X > linkBall.Position.X) this.Position.X -= 0.01; else this.Position.X += 0.01; }, 9));
+            this.SetBehavior(new FrameActivity(() => { Random rand = new Random((int)(this.Position.X * 100)); if (rand.Next(100) <= 10) this.Rotate(0.1); },  9));
+            this.SetBehavior(new FrameActivity(() => { Random rand = new Random((int)(this.Position.X * 100)); if (rand.Next(100) <= 2) this.Rotate(-0.1); },  9));
+            this.Position = new Coord3d(0, 0.70f, 0);
         }
     }
 
@@ -52,41 +85,113 @@ namespace HORSE
             this.Texture = new TextureFigure(cheracter);
 
             this.Hitbox.Square(new Coord2d(0.02f, 0.02f));
-            this.Position = new Coord3d(0, 0, 0);
+            this.Position = new Coord3d(-0.5, -0.5, 0);
 
-            this.Speed = new Coord2d(-0.008f, -0.005f);
-            this.SetBallBorderRule();
-            this.mass = 1;
+            this.Speed = new Coord2d(-0.015f, -0.016f);
+
+            Console.Out.WriteLine(Speed.len());
+
+            this.Mass = 1;
         }
     }
 
 
+    class HPbar : Active
+    {
+        private double HP;
+
+        public HPbar() : base()
+        {
+            this.Position = new Coord3d(0.15, 0.15, 0);
+            HP = 100;
+
+
+            this.Hitbox.Square(new Coord2d(0.005, -0.15 * HP/100));
+            this.Texture = new TextureFigure(this.Hitbox);
+            ((TextureFigure)this.Texture).FillColor = Color.Green;
+            ((TextureFigure)this.Texture).BorderColor = Color.Green;
+
+        }
+    }
+
+
+    class UPbar : Active
+    {
+
+        public static Physics linkball;
+
+        protected double up;
+
+        public double UP { get => up; set => up = value; }
+
+        public UPbar() : base()
+        {
+            this.Position = new Coord3d(0.20, 0.15, 0);
+            UP = 100;
+
+
+            this.Hitbox.Square(new Coord2d(0.005, -0.15 * UP / 100));
+            this.Texture = new TextureFigure(this.Hitbox);
+            ((TextureFigure)this.Texture).FillColor = Color.Orange;
+            ((TextureFigure)this.Texture).BorderColor = Color.Orange;
+
+            this.SetBehavior(new FrameActivity(() => { this.Hitbox.Square(new Coord2d(0.005, -0.15 * UP / 100)); if (UP < 100) UP+= 0.05; }));
+
+        }
+    }
+
+    class Stick: GameObject
+    {
+        public Stick() : base()
+        {
+            this.Hitbox.Square(new Coord2d(0.005, -0.15));
+            this.Texture = new TextureFigure(this.Hitbox);
+
+            ((TextureFigure)this.Texture).FillColor = Color.White;
+            ((TextureFigure)this.Texture).BorderColor = Color.White;
+        }
+    }
+
+
+    class Center: GravityPoint
+    {
+        public Center()
+        {
+            this.Position = new Coord3d(0, 0, 0);
+            this.power = 0.0003;
+        }
+    }
 
 
     class Program
     {
 
-
-
         static void Main(string[] args)
         {
+
+
             Core game = new Core();
 
             Ball ball = new Ball();
             Platform.linkBall = ball;
+            UPbar.linkball = ball;
 
 
             Player player = new Player();
             Enemy enemy = new Enemy();
-            
 
-           
+            Center center = new Center();
+            
 
             Core.MainScene.Add(ball);
             Core.MainScene.Add(player);
             Core.MainScene.Add(enemy);
+            Core.MainScene.Add(center);
 
             game.Run();
         }
     }
-}
+
+
+
+    }

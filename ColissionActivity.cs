@@ -8,8 +8,10 @@ namespace HORSE
 {
     class ColissionActivity: Activity
     {
-        protected GameObject gameObject;
+        private GameObject gameObject;
         protected Type type;
+
+        public GameObject GameObject { get => gameObject; set => gameObject = value; }
 
         public ColissionActivity(GameObject gameObject, script Script)
         {

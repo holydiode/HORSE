@@ -13,12 +13,13 @@ namespace HORSE
         private bool status;
         private Animation animation;
         private Coord3d position;
-        private GameObject parent;
-        private List<GameObject> children;
+        protected GameObject parent;
+        protected List<GameObject> children;
 
         internal Coord3d Position { get => position; set => position = value; }
         internal Texture Texture { get => texture; set => texture = value; }
         internal Geometry Hitbox { get => hitbox; set => hitbox = value; }
+        internal GameObject Parent { get => parent; set => parent = value; }
 
         public GameObject()
         {
@@ -28,7 +29,7 @@ namespace HORSE
             animation = null;
             position = new Coord3d(0,0,0);
             parent = null;
-            children = null;
+            children = new List<GameObject>();
         }
 
         public Coord2d GetPosition()
@@ -41,6 +42,13 @@ namespace HORSE
             {
                 return position.LowerDegree() + parent.GetPosition();
             }
+        }
+
+
+        public void SetChild(GameObject child)
+        {
+            children.Add(child);
+            child.parent = this;
         }
 
         public bool PointInObject(Coord2d point)
@@ -62,6 +70,36 @@ namespace HORSE
 
         public void Drow() {
             texture.Drow();
+
+            foreach(GameObject currentObject in this.children)
+            {
+                Core.CurrentObject = currentObject;
+                currentObject.Drow();
+            }
+
+        }
+
+        public void Rotate(double rad)
+        {
+            foreach(Coord2d currentPoint in this.Hitbox.Points)
+            {
+
+
+                double X = currentPoint.X;
+                double y = currentPoint.Y;
+
+                currentPoint.X = X * Math.Cos(rad) - y * Math.Sin(rad);
+                currentPoint.Y = X * Math.Sin(rad) + y * Math.Cos(rad);
+
+            }
+
+            this.hitbox.RecountBorder();
+
+            if( this.Texture.GetType() != typeof(TextureFigure) &&  ((TextureFigure)this.Texture).Border.Points != this.Hitbox.Points) { 
+                this.Texture.Rotate(rad);
+            }
+
+
         }
 
     }

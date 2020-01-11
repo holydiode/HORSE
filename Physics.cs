@@ -8,13 +8,14 @@ namespace HORSE
 {
     class Physics : Active
     {
-        protected float mass;
+        private double mass;
         private Coord2d speed;
         protected float inertia;
         protected Coord2d massCenter;
         protected int layerColision;
 
         internal Coord2d Speed { get => speed; set => speed = value; }
+        public double Mass { get => mass; set => mass = value; }
 
         public Physics():base(){
             speed = new Coord2d();
@@ -24,48 +25,100 @@ namespace HORSE
 
         public void Move() {
             this.Position = this.Position + speed;
-            this.Hit();
+            this.Hit();  //ДОРАБОТАТЬ !!!!
+            this.Drug();
+            this.Push(); 
         }
-
 
 
         public void Hit() {
             foreach (Physics currentObject in Core.MainScene.PhysicsObjects) {
-                if (this.layerColision == currentObject.layerColision && this != currentObject)
+                if (this.layerColision == currentObject.layerColision && currentObject != this)
                 {
                     foreach (Coord2d currentPoint in currentObject.Hitbox.Points)
                     {
                         if (this.PointInObject(currentPoint + currentObject.GetPosition()))
                         {
-                            double impulsX = this.speed.X * this.mass + currentObject.speed.X * currentObject.mass;
-                            double impulsY = this.speed.Y * this.mass + currentObject.speed.Y * currentObject.mass;
 
-                            List<Coord2d> near = currentObject.Hitbox.FindNearStraight(currentPoint, currentObject.GetPosition());
+                            List<Coord2d> near = this.Hitbox.FindNearStraight(currentPoint + currentObject.GetPosition(), this.GetPosition());
 
-                            Coord2d moveFirst = new Coord2d(-1 * (near[1].Y - near[0].Y), near[1].X - near[0].X);
-                            Coord2d moveSecond = moveFirst * -1;
-
+                            Coord2d normal = new Coord2d((near[1].Y - near[0].Y), (near[0].X - near[1].X));
+                            normal = normal / normal.len();
+                            
+                            Coord2d mirror = currentObject.speed - normal * 2  * (normal * currentObject.speed);
 
                             if (this.mass != 0)
                             {
-                                this.speed = moveSecond / moveSecond.len() / this.mass;
-                                this.speed.X *= impulsX;
-                                this.speed.Y *= impulsY;
+
                             }
 
                             if (currentObject.mass != 0)
                             {
-                                currentObject.speed = moveFirst / moveFirst.len() / currentObject.mass;
-
-                                currentObject.speed.X *= impulsX;
-                                currentObject.speed.Y *= impulsY;
+                                currentObject.Speed = mirror;
                             }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        public void Push()
+        {
+            foreach (Physics currentObject in Core.MainScene.PhysicsObjects)
+            {
+                if (this.layerColision == currentObject.layerColision && currentObject != this)
+                {
+                    foreach (Coord2d currentPoint in currentObject.Hitbox.Points)
+                    {
+                        if (this.PointInObject(currentPoint + currentObject.GetPosition()))
+                        {
+                            double len;
+
+                            List<Coord2d> near = this.Hitbox.FindNearStraight(currentPoint + currentObject.GetPosition(), this.GetPosition(), out len);
+
+                            Coord2d normal = new Coord2d((near[1].Y - near[0].Y), (near[0].X - near[1].X));
+                            normal = normal / normal.len();
+
+                            GameObject pushed = this;
+
+                            if (this.mass == 0 || this.mass < currentObject.mass)
+                            {
+                                pushed = currentObject;
+                                normal = normal * -1;
+                            }
+
+                            pushed.Position = pushed.Position + (normal * len);
+
+
+                            foreach (Activity currentivent in this.Activities)
+                            {
+                                if(currentivent is ColissionActivity && ((ColissionActivity)currentivent).GameObject == currentObject)
+                                {
+                                    currentivent.Script();
+                                }
+                            }
+
 
                         }
                     }
                 }
             }
         }
+
+
+        public void Drug()
+        {
+            foreach(Gravitaiton currentObject in Core.MainScene.GravityObjects)
+            {
+                currentObject.drug(this);
+            }
+        }
+
+
 
 
         public void SetBallBorderRule()
@@ -79,12 +132,18 @@ namespace HORSE
 
         public new void SetTopDownBehaivor(float speed)
         {
+
+            this.Activities.Add(new KeyUp("w", () => this.Speed.X = 0));
+            this.Activities.Add(new KeyUp("a", () => this.Speed.Y = 0));
+            this.Activities.Add(new KeyUp("s", () => this.Speed.X = 0));
+            this.Activities.Add(new KeyUp("d", () => this.Speed.Y = 0));
             this.Activities.Add(new KeyHold("w", () => this.Speed.Y += speed));
             this.Activities.Add(new KeyHold("s", () => this.Speed.Y -= speed));
             this.Activities.Add(new KeyHold("a", () => this.Speed.X -= speed));
             this.Activities.Add(new KeyHold("d", () => this.Speed.X += speed));
 
             this.Activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
+
         }
 
 
@@ -100,10 +159,10 @@ namespace HORSE
 
         public new void SetSolidBoderRule()
         {
-            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.RightBorder + this.GetPosition().X > 1) { this.Position.X -= this.GetPosition().X + this.Hitbox.RightBorder - 1; speed.X = 0; } }));
-            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.LeftBorder + this.GetPosition().X < -1) { this.Position.X -= this.Hitbox.LeftBorder + this.GetPosition().X + 1; speed.X = 0; } }));
-            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.UpBorder + this.GetPosition().Y > 1) { this.Position.Y -= this.Hitbox.UpBorder + this.GetPosition().Y - 1; speed.Y = 0; } }));
-            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.BottomBorder + this.GetPosition().Y < -1) { this.Position.Y -= this.Hitbox.BottomBorder + this.GetPosition().Y + 1; speed.Y = 0; } }));
+            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.RightBorder + this.GetPosition().X > 1) { this.Position.X -= this.GetPosition().X + this.Hitbox.RightBorder - 1 ;  } }));
+            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.LeftBorder + this.GetPosition().X < -1) { this.Position.X -= this.Hitbox.LeftBorder + this.GetPosition().X + 1 ;  } }));
+            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.UpBorder + this.GetPosition().Y > 1) { this.Position.Y -= this.Hitbox.UpBorder + this.GetPosition().Y - 1 ;  } }));
+            this.Activities.Add(new FrameActivity(() => { if (this.Hitbox.BottomBorder + this.GetPosition().Y < -1) { this.Position.Y -= this.Hitbox.BottomBorder + this.GetPosition().Y + 1 ;  } }));
 
             this.Activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }

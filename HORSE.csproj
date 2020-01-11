@@ -58,6 +58,8 @@
     <Compile Include="FrameActivity.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Geometry.cs" />
+    <Compile Include="Gravitaiton.cs" />
+    <Compile Include="GravityPoint.cs" />
     <Compile Include="KeyBoardActity.cs" />
     <Compile Include="KeyHold.cs" />
     <Compile Include="KeyUp.cs" />

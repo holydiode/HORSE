@@ -32,6 +32,18 @@ namespace HORSE
             {
                 this.button = Key.D;
             }
+            else if (button.ToLower() == "space")
+            {
+                this.button = Key.Space;
+            }
+            else if (button.ToLower() == "q")
+            {
+                this.button = Key.Q;
+            }
+            else if (button.ToLower() == "e")
+            {
+                this.button = Key.E;
+            }
 
             this.propity = 5;
             this.Script = Script;

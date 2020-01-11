@@ -40,25 +40,27 @@ namespace HORSE
 
         public void Run()
         {
-            height = 1000;
-            width = 1000;
+            height = 800;
+            width = 800;
 
             window = new GameWindow(width, height);
             
 
             window.RenderFrame += (sender, e) =>
             {
-                foreach (Active curent in mainScene.DinamicObjects)
-                {
-                    currentObject = curent;
-                    curent.Run();
-                }
 
                 foreach (Physics curent in mainScene.PhysicsObjects)
                 {
                     currentObject = curent;
                     curent.Move();
                 }
+
+                foreach (Active curent in mainScene.DinamicObjects)
+                {
+                    currentObject = curent;
+                    curent.Run();
+                }
+
 
                 GL.Clear(ClearBufferMask.ColorBufferBit);
                 GL.ClearColor(Color4.Black);

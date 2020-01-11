@@ -30,12 +30,31 @@ namespace HORSE
         {
             points = new List<Coord2d>();
         }
+
+
+        public void RegularPolygon(int a, double rad)
+        {
+            points.Clear();
+
+            for (int i = 0; i < a; i++)
+            {
+                points.Add(new Coord2d(rad * Math.Cos(i * 2 * Math.PI / a), rad * Math.Sin(i * 2 * Math.PI / a)));
+            }
+
+            RecountBorder();
+            this.complexity = a;
+        }
+
+
+
         public void Square(Coord2d point) {
             points.Clear();
+
             points.Add(new Coord2d(point.X, point.Y));
-            points.Add(new Coord2d(point.X, 0));
-            points.Add(new Coord2d(0, 0));
             points.Add(new Coord2d(0, point.Y));
+            points.Add(new Coord2d(0, 0));
+            points.Add(new Coord2d(point.X, 0));
+
 
 
             RecountBorder();
@@ -75,6 +94,26 @@ namespace HORSE
 
             for (int i = 0, j = this.Complexity - 1; i < this.Complexity; j = i++)
             {
+                double len = Math.Abs((Points[j].Y - Points[i].Y) * point.X  - (Points[j].X - Points[i].X) * point.Y + (Points[j].X + move.X) * (Points[i].Y + move.Y) - (Points[j].Y + move.Y) * (Points[i].X + move.X)) / Math.Sqrt((Points[j].Y - Points[i].Y) * (Points[j].Y - Points[i].Y) + (Points[j].X - Points[i].X) * (Points[j].X - Points[i].X));
+                if (len < min)
+                {
+                    min = len;
+                    straight.Clear();
+                    straight.Add(Points[i]);
+                    straight.Add(Points[j]);
+                }
+            }
+            return straight;
+        }
+
+
+        public List<Coord2d> FindNearStraight(Coord2d point, Coord2d move, out double leng)
+        {
+            List<Coord2d> straight = new List<Coord2d>();
+            double min = 2;
+
+            for (int i = 0, j = this.Complexity - 1; i < this.Complexity; j = i++)
+            {
                 double len = Math.Abs((Points[j].Y - Points[i].Y) * point.X - (Points[j].X - Points[i].X) * point.Y + (Points[j].X + move.X) * (Points[i].Y + move.Y) - (Points[j].Y + move.Y) * (Points[i].X + move.X)) / Math.Sqrt((Points[j].Y - Points[i].Y) * (Points[j].Y - Points[i].Y) + (Points[j].X - Points[i].X) * (Points[j].X - Points[i].X));
                 if (len < min)
                 {
@@ -84,6 +123,8 @@ namespace HORSE
                     straight.Add(Points[j]);
                 }
             }
+
+            leng = min;
 
             return straight;
         }
@@ -119,6 +160,8 @@ namespace HORSE
             }
         }
 
+
+
         public double[] GeometryToArrat()
         {
             double[] array = new double[this.complexity * 3];
@@ -131,6 +174,6 @@ namespace HORSE
             }
             return array;
         }
-
     }
+
 }

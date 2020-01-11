@@ -23,6 +23,11 @@ namespace HORSE
             
         }
 
+        public virtual void Rotate(double rad)
+        {
+
+        }
+
     }
 
 
