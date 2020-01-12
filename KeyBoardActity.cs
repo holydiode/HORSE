@@ -40,10 +40,39 @@ namespace HORSE
             {
                 this.button = Key.Q;
             }
+            else if (button.ToLower() == "j")
+            {
+                this.button = Key.J;
+            }
+            else if (button.ToLower() == "k")
+            {
+                this.button = Key.K;
+            }
+            else if (button.ToLower() == "l")
+            {
+                this.button = Key.L;
+            }
+            else if (button.ToLower() == "i")
+            {
+                this.button = Key.I;
+            }
+            else if (button.ToLower() == "u")
+            {
+                this.button = Key.U;
+            }
+            else if (button.ToLower() == "o")
+            {
+                this.button = Key.O;
+            }
             else if (button.ToLower() == "e")
             {
                 this.button = Key.E;
             }
+            else
+            {
+                throw new Exception("Unknow key");
+            }
+
 
             this.propity = 5;
             this.Script = Script;

@@ -64,25 +64,55 @@ namespace HORSE
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
+        public void Refresh()
+        {
+            foreach(Activity activity in Activities)
+            {
+                activity.Refresh();
+            }
+        }
+
 
 
 
         public void Run()
         {
-            foreach (Activity current in activities)
+            if (Core.CurrentObject.Status == true)
             {
-                current.Run();
+                foreach (Activity current in activities)
+                {
+                    current.Run();
+                }
+
+                foreach (GameObject currentObject in children)
+                {
+                    Core.CurrentObject = currentObject;
+
+                    if (currentObject is Active)
+                    {
+                        ((Active)currentObject).Run();
+                    }
+                }
+
             }
 
-            foreach (GameObject currentObject in children)
+            else
             {
-                if(currentObject is Active)
+                this.Refresh();
+
+
+                foreach (GameObject currentObject in children)
                 {
-                    ((Active)currentObject).Run();
+                    Core.CurrentObject = currentObject;
+
+                    if (currentObject is Active)
+                    {
+                        ((Active)currentObject).Refresh();
+                    }
                 }
+
             }
         }
-
 
     }
 }

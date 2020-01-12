@@ -78,8 +78,6 @@ namespace HORSE
                 currentPoint.X = currentPoint.X * Math.Cos(rad) - currentPoint.Y * Math.Sin(rad);
                 currentPoint.Y = currentPoint.X * Math.Sin(rad) + currentPoint.Y * Math.Cos(rad);
 
-
-
             }
         }
     }

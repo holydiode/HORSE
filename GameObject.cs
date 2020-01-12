@@ -20,6 +20,7 @@ namespace HORSE
         internal Texture Texture { get => texture; set => texture = value; }
         internal Geometry Hitbox { get => hitbox; set => hitbox = value; }
         internal GameObject Parent { get => parent; set => parent = value; }
+        public bool Status { get => status; set => status = value; }
 
         public GameObject()
         {
@@ -69,15 +70,20 @@ namespace HORSE
 
 
         public void Drow() {
-            texture.Drow();
 
-            foreach(GameObject currentObject in this.children)
+            if (Core.CurrentObject.Status == true)
             {
-                Core.CurrentObject = currentObject;
-                currentObject.Drow();
-            }
+                texture.Drow();
 
+                foreach (GameObject currentObject in this.children)
+                {
+                    Core.CurrentObject = currentObject;
+                    currentObject.Drow();
+                }
+            }
         }
+
+
 
         public void Rotate(double rad)
         {

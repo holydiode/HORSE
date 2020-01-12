@@ -25,6 +25,10 @@ namespace HORSE
             {
                 this.button = MouseButton.Right;
             }
+            else
+            {
+                throw new Exception("unknown button"); 
+            }
 
             this.Script = Script;
             mouse = OpenTK.Input.Mouse.GetState();

@@ -26,12 +26,18 @@ namespace HORSE
             this.y = y;
         }
 
-        public void ScreenToScene() { 
+        public void ScreenToScene() {
 
+
+
+            //Console.WriteLine("{0} {1}", X, Y);
 
             Point transfer = Core.Window.PointToClient(new Point((int)x, (int)y));
 
-          
+            //Console.WriteLine("{0} {1}", transfer.X, transfer.Y);
+
+
+
 
             this.x = (float)transfer.X / Core.Width * 2 - 1;
             this.y = 1 - (float)transfer.Y / Core.Height * 2;

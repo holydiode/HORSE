@@ -24,10 +24,12 @@ namespace HORSE
         }
 
         public void Move() {
+            if (Core.CurrentObject.Status == true) { 
             this.Position = this.Position + speed;
             this.Hit();  //ДОРАБОТАТЬ !!!!
             this.Drug();
-            this.Push(); 
+            this.Push();
+            }
         }
 
 
@@ -118,7 +120,6 @@ namespace HORSE
             }
         }
 
-
         public void Drug()
         {
             foreach(Gravitaiton currentObject in Core.MainScene.GravityObjects)
@@ -165,6 +166,18 @@ namespace HORSE
 
             this.Activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
+
+
+        public void SetArcanoidBehaivor(float speed, string keyOne, string keyTwo)
+        {
+            this.Activities.Add(new KeyUp(keyOne, () => this.Speed.X = 0));
+            this.Activities.Add(new KeyUp(keyTwo, () => this.Speed.X = 0));
+            this.Activities.Add(new KeyHold(keyOne, () => this.Speed.X = -speed));
+            this.Activities.Add(new KeyHold(keyTwo, () => this.Speed.X = speed));
+
+            this.Activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
+        }
+
 
         public new void SetSolidBoderRule()
         {

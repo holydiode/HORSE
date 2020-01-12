@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -18,6 +17,7 @@ namespace HORSE
     {
         private static Scene mainScene;
         private static GameObject currentObject;
+
 
         private static int width;
 
@@ -40,11 +40,20 @@ namespace HORSE
 
         public void Run()
         {
+
+
+            Mouse.SetPosition(0, 0);
+
             height = 800;
             width = 800;
 
             window = new GameWindow(width, height);
-            
+
+            window.Load += (sender, e) =>
+            {
+                
+            };
+
 
             window.RenderFrame += (sender, e) =>
             {
@@ -61,15 +70,16 @@ namespace HORSE
                     curent.Run();
                 }
 
-
                 GL.Clear(ClearBufferMask.ColorBufferBit);
                 GL.ClearColor(Color4.Black);
+
 
                 foreach (GameObject curent in mainScene.StaticObjects)
                 {
                     currentObject = curent;
                     currentObject.Drow();
                 }
+
 
                 window.SwapBuffers();
             };

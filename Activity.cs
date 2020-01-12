@@ -27,6 +27,15 @@ namespace HORSE
             propity = 0;
         }
 
+        public Activity(script Script)
+        {
+            count = 0;
+            status = true;
+            children = null;
+            propity = 0;
+            this.Script = Script;
+        }
+
         protected virtual bool Check()
         {
             return true;
@@ -39,6 +48,7 @@ namespace HORSE
                 Script();
                 count++;
             }
+            
         }
 
         public void Refresh()
