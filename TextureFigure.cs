@@ -14,9 +14,11 @@ namespace HORSE
 {
     class TextureFigure:Texture
     {
+        //граница
         private Geometry border;
-        private int borderWidth;
+        //цвет заливки
         private Color fillColor;
+        //цвет обводки
         private Color borderColor;
 
         internal Geometry Border { get => border; set => border = value; }
@@ -26,7 +28,6 @@ namespace HORSE
         public TextureFigure()
         {
             startPoint = new Coord2d(0, 0);
-
             border = new Geometry();
         }
        
@@ -35,50 +36,54 @@ namespace HORSE
                 this.border = border;
                 fillColor = Color.White;
                 borderColor = Color.Red;
-                borderWidth = 100;
+        }
+
+        public TextureFigure(Geometry border, Color fillColor, Color borderColor)
+        {
+            startPoint = new Coord2d(0, 0);
+            this.border = border;
+            this.fillColor = fillColor;
+            this.borderColor = borderColor;
         }
 
         public override void Drow() {
 
-
-            GL.Begin(PrimitiveType.TriangleFan);
-
-            GL.Color3(this.fillColor);
-
-            foreach (Coord2d point in border.Points)
+            if (this.fillColor != null)
             {
-                Coord2d finish = point + startPoint + Core.CurrentObject.GetPosition();
-                GL.Vertex3(finish.X, finish.Y, 0);
+                GL.Begin(PrimitiveType.TriangleFan);
+                GL.Color3(this.fillColor);
+                foreach (Coord2d point in border.Points)
+                {
+                    Coord2d finish = point + startPoint + Core.CurrentObject.GetPosition();
+                    GL.Vertex3(finish.X, finish.Y, 0);
+                }
+                GL.End();
             }
 
-            GL.End();
 
 
-            GL.Begin(PrimitiveType.LineLoop);
-
-            GL.Color3(this.borderColor);
-
-            GL.LineWidth(this.borderWidth);
-
-            foreach (Coord2d point in border.Points)
-            {
-                Coord2d finish = point + startPoint + Core.CurrentObject.GetPosition();
-                GL.Vertex3(finish.X, finish.Y, 0);
+            if (this.borderColor != null) { 
+                GL.Begin(PrimitiveType.LineLoop);
+                GL.Color3(this.borderColor);
+                foreach (Coord2d point in border.Points)
+                {
+                    Coord2d finish = point + startPoint + Core.CurrentObject.GetPosition();
+                    GL.Vertex3(finish.X, finish.Y, 0);
+                }
+                GL.End();
             }
-
-            GL.End();
         }
 
+        //поворот текстуры
         public override void Rotate(double rad)
         {
             foreach (Coord2d currentPoint in this.border.Points)
             {
-
-
                 currentPoint.X = currentPoint.X * Math.Cos(rad) - currentPoint.Y * Math.Sin(rad);
                 currentPoint.Y = currentPoint.X * Math.Sin(rad) + currentPoint.Y * Math.Cos(rad);
-
             }
         }
+
+
     }
 }

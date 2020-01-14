@@ -8,10 +8,11 @@ namespace HORSE
 {
     class Physics : Active
     {
+        //масса объекта
         private double mass;
+        //скорость
         private Coord2d speed;
-        protected float inertia;
-        protected Coord2d massCenter;
+        //уровень соприкосновения.
         protected int layerColision;
 
         internal Coord2d Speed { get => speed; set => speed = value; }
@@ -20,18 +21,16 @@ namespace HORSE
         public Physics():base(){
             speed = new Coord2d();
             layerColision = 0;
-            inertia = 1;
         }
 
         public void Move() {
             if (Core.CurrentObject.Status == true) { 
-            this.Position = this.Position + speed;
-            this.Hit();  //ДОРАБОТАТЬ !!!!
-            this.Drug();
-            this.Push();
+                this.Position = this.Position + speed;
+                this.Hit();  //ДОРАБОТАТЬ !!!!
+                this.Drug();
+                this.Push();
             }
         }
-
 
         public void Hit() {
             foreach (Physics currentObject in Core.MainScene.PhysicsObjects) {
@@ -66,8 +65,6 @@ namespace HORSE
             }
         }
 
-
-
         public void Push()
         {
             foreach (Physics currentObject in Core.MainScene.PhysicsObjects)
@@ -79,14 +76,10 @@ namespace HORSE
                         if (this.PointInObject(currentPoint + currentObject.GetPosition()))
                         {
                             double len;
-
                             List<Coord2d> near = this.Hitbox.FindNearStraight(currentPoint + currentObject.GetPosition(), this.GetPosition(), out len);
-
                             Coord2d normal = new Coord2d((near[1].Y - near[0].Y), (near[0].X - near[1].X));
                             normal = normal / normal.len();
-
                             GameObject pushed = this;
-
                             if (this.mass == 0 || this.mass < currentObject.mass)
                             {
                                 pushed = currentObject;
@@ -95,7 +88,6 @@ namespace HORSE
 
                             pushed.Position = pushed.Position + (normal * len);
 
-
                             foreach (Activity currentivent in this.Activities)
                             {
                                 if(currentivent is ColissionActivity && ((ColissionActivity)currentivent).GameObject == currentObject)
@@ -103,8 +95,6 @@ namespace HORSE
                                     currentivent.Script();
                                 }
                             }
-
-
                             foreach (Activity currentivent in currentObject.Activities)
                             {
                                 if (currentivent is ColissionActivity && ((ColissionActivity)currentivent).GameObject == this)
@@ -112,8 +102,6 @@ namespace HORSE
                                     currentivent.Script();
                                 }
                             }
-
-
                         }
                     }
                 }
@@ -191,10 +179,4 @@ namespace HORSE
 
 
     }
-
-
-
-
-
-
 }

@@ -11,21 +11,25 @@ namespace HORSE
 
         private List<Activity> activities;
 
+
+
         internal List<Activity> Activities { get => activities; set => activities = value; }
+
+
 
         public Active() : base()
         {
             activities = new List<Activity>();
         }
 
-
+        //установка поведения
         public void SetBehavior(Activity activity)
         {
             activities.Add(activity);
-
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; }); ;
         }
 
+        //управление с видом сверху
         public void SetTopDownBehaivor(float speed)
         {
             activities.Add(new KeyHold("w", () => this.Position.Y += speed));
@@ -36,6 +40,7 @@ namespace HORSE
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
+        //управление с видом сверху по горизонтальной оси
         public void SetArcanoidBehaivor(float speed)
         {
             activities.Add(new KeyHold("a", () => this.Position.X -= speed));
@@ -44,6 +49,7 @@ namespace HORSE
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
+        //Телепортация объета при пересечении границы окна в противоположную сторону
         public void SetTeleportBorderRule()
         {
             activities.Add(new FrameActivity(() => { if (this.GetPosition().Y < -1) this.Position.Y = 1f; }));
@@ -54,13 +60,13 @@ namespace HORSE
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
+        //Создания непроницаймой границы окна для объекта
         public void SetSolidBoderRule()
         {
             activities.Add(new FrameActivity(() => { if (this.Hitbox.RightBorder + this.GetPosition().X > 1) { this.Position.X -=  this.GetPosition().X + this.Hitbox.RightBorder - 1; } }));
             activities.Add(new FrameActivity(() => { if (this.Hitbox.LeftBorder + this.GetPosition().X < -1) { this.Position.X -= this.Hitbox.LeftBorder + this.GetPosition().X + 1; } }));
             activities.Add(new FrameActivity(() => { if (this.Hitbox.UpBorder + this.GetPosition().Y > 1) { this.Position.Y -= this.Hitbox.UpBorder + this.GetPosition().Y - 1; } }));
             activities.Add(new FrameActivity(() => { if (this.Hitbox.BottomBorder + this.GetPosition().Y < -1) { this.Position.Y -= this.Hitbox.BottomBorder + this.GetPosition().Y + 1; } }));
-
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
@@ -71,8 +77,6 @@ namespace HORSE
                 activity.Refresh();
             }
         }
-
-
 
 
         public void Run()
@@ -113,6 +117,8 @@ namespace HORSE
 
             }
         }
+
+
 
     }
 }

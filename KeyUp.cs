@@ -12,7 +12,6 @@ namespace HORSE
     class KeyUp:KeyBoardActity
     {
 
-
         public KeyUp(string button, script Script) : base(button, Script)
         {
         }
@@ -23,9 +22,5 @@ namespace HORSE
             return (keyboard[button] == false);
         }
         
-
-
-
-
     }
 }

@@ -10,25 +10,19 @@ using System.Threading.Tasks;
 
 namespace HORSE
 {
-    class Texture
+    abstract class Texture
     {
-        private Bitmap pixels;
+        //точка отрисовки
         protected Coord2d startPoint;
 
-        public virtual void Remember() { 
-        }
-
+        //нарисовать текстуру
         public virtual void Drow()
-        {
-            
+        {  
         }
 
+        //поврнуть текстуру
         public virtual void Rotate(double rad)
         {
-
         }
-
     }
-
-
 }

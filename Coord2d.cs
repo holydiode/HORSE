@@ -22,33 +22,22 @@ namespace HORSE
         }
 
         public Coord2d() {
-            this.x = x;
-            this.y = y;
+            this.x = 0;
+            this.y = 0;
         }
 
         public void ScreenToScene() {
 
-
-
-            //Console.WriteLine("{0} {1}", X, Y);
-
             Point transfer = Core.Window.PointToClient(new Point((int)x, (int)y));
-
-            //Console.WriteLine("{0} {1}", transfer.X, transfer.Y);
-
-
-
-
             this.x = (float)transfer.X / Core.Width * 2 - 1;
             this.y = 1 - (float)transfer.Y / Core.Height * 2;
 
-
         }
+
         public double len()
         {
             return (Math.Sqrt(x * x + y * y));
         } 
-        
         
         
         public double len(Coord2d point)

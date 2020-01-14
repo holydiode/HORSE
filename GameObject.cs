@@ -8,12 +8,17 @@ namespace HORSE
 {
     class GameObject
     {
-        private Texture texture;
-        private Geometry hitbox;
-        private bool status;
-        private Animation animation;
+        //Текстура объекта
+        private Texture texture; 
+        //Фактическое тело объекта
+        private Geometry hitbox; 
+        //Существование объекта в данный момент времени
+        private bool status; 
+        //позиция объекта в окне
         private Coord3d position;
+        //родительский объект
         protected GameObject parent;
+        //дочерние объекты
         protected List<GameObject> children;
 
         internal Coord3d Position { get => position; set => position = value; }
@@ -27,7 +32,6 @@ namespace HORSE
             texture = new TextureFigure();
             hitbox = new Geometry();
             status = true;
-            animation = null;
             position = new Coord3d(0,0,0);
             parent = null;
             children = new List<GameObject>();

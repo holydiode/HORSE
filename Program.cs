@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OpenTK.Graphics.OpenGL;
 
 using System.Drawing;
 
@@ -12,24 +11,32 @@ using System.Drawing;
 
 namespace HORSE
 {
+    //класс платформы
     class Platform : Physics
     {
+        //подключаем к платформам мяч
         public static Physics linkBall;
+        //создаём поле для HP-бара
         protected HPbar HPBar;
+        //создаём поле для UP-бфра
         protected UPbar UPBar;
 
-
+        
         public Platform() : base()
         {
             this.Status = false;
+            //устанавливаем треугольную форму
             this.Hitbox.RegularPolygon(3, 0.13);
             this.Texture = new TextureFigure(this.Hitbox);
+            //запрещаем выходить за пределы экрана
             this.SetSolidBoderRule();
+            //делаем объект недвижимым
             this.Mass = 0;
 
             HPBar = new HPbar();
             UPBar = new UPbar();
 
+            //устанавливаем свойство востановления здаровья при соударении с мячом
             this.SetBehavior(new Colission(linkBall, () =>
             {
                 if (this.HPBar.HP < 100)
@@ -38,11 +45,12 @@ namespace HORSE
                 }
             }
             ));
-
+            //Устанавливаем связь с барами
             this.SetChild(HPBar);
             this.SetChild(UPBar);
         }
     }
+
 
     class Barrow : Platform
     {
@@ -128,48 +136,32 @@ namespace HORSE
             this.Position = new Coord3d(0.15, 0.15, 0);
             HP = 100;
 
-
             this.Hitbox.Square(new Coord2d(0.005, -0.15 * HP / 100));
             this.Texture = new TextureFigure(this.Hitbox);
             ((TextureFigure)this.Texture).FillColor = Color.Green;
             ((TextureFigure)this.Texture).BorderColor = Color.Green;
-
-
-
             this.SetBehavior(new FrameActivity(() => { this.Hitbox.Square(new Coord2d(0.005, -0.15 * HP / 100)); if (HP >= 0) HP -= 0.05; }));
 
             this.SetBehavior(new FrameActivity(() => { if (HP <= 0) { finish.Status = true; } }));
             this.SetBehavior(new ShowActivity(() => { this.HP = 100; }));
-
-
         }
 
         public double HP { get => hP; set => hP = value; }
     }
 
-
     class UPbar : Active
     {
-
         public static Physics linkball;
-
         protected double up;
-
-
-
         public double UP { get => up; set => up = value; }
-
         public UPbar() : base()
         {
             this.Position = new Coord3d(0.20, 0.15, 0);
             UP = 100;
-
-
             this.Hitbox.Square(new Coord2d(0.005, -0.15 * UP / 100));
             this.Texture = new TextureFigure(this.Hitbox);
             ((TextureFigure)this.Texture).FillColor = Color.Orange;
             ((TextureFigure)this.Texture).BorderColor = Color.Orange;
-
             this.SetBehavior(new FrameActivity(() => { this.Hitbox.Square(new Coord2d(0.005, -0.15 * UP / 100)); if (UP < 100) UP += 0.05; }));
             this.SetBehavior(new ShowActivity(() => { this.UP = 100; }));
             
@@ -198,23 +190,17 @@ namespace HORSE
 
             OnePlayerColections = new List<GameObject>();
             TwoPlayerColections = new List<GameObject>();
-
-
             this.Position = new Coord3d(-0.5, 0.5, 0);
             this.Hitbox.Square(new Coord2d(1, -1));
             this.Texture = new TextureFigure(this.Hitbox);
-
-
             for (int i = 0; i < 3; i++)
             {
                 this.SetChild(new Button());
                 this.children[i].Position = new Coord3d(0.1, -0.5 - 0.22 * i, 0);
 
             }
-
             this.SetChild(new Text("POLIBIUS", 100));
             this.children[3].Position = new Coord3d(0.1, -0.2, 0);
-
             ((Active)this.children[0]).SetBehavior(new OnClick("left", () =>
             {
                 foreach (GameObject currentObject in OnePlayerColections)
@@ -223,10 +209,7 @@ namespace HORSE
                 }
                 this.Status = false;
             }));
-
             this.children[0].SetChild(new Text("1 игрок", 90, Color.White, Color.Salmon));
-
-
             ((Active)this.children[1]).SetBehavior(new OnClick("left", () =>
             {
                 foreach (GameObject currentObject in TwoPlayerColections)
@@ -235,9 +218,7 @@ namespace HORSE
                 }
                 this.Status = false;
             }));
-
             this.children[1].SetChild(new Text("2 игрока", 90, Color.White, Color.Salmon));
-
             ((Active)this.children[2]).SetBehavior(new OnClick("left", () =>
             {
                 Core.Window.Close();
@@ -321,24 +302,18 @@ namespace HORSE
     {
         static void Main(string[] args)
         {
-
-            Core game = new Core();
-
-
+            Core game = new Core(800, 800);
             Menu menu = new Menu();
             Core.MainScene.Add(menu);
+
             Finish.startmenu = menu;
             Finish finish = new Finish();
 
             HPbar.finish = finish;
 
-
             Ball ball = new Ball();
             Platform.linkBall = ball;
             UPbar.linkball = ball;
-
-
-
 
             Barrow barrow = new Barrow();
             Player player = new Player();
@@ -354,26 +329,20 @@ namespace HORSE
             Core.MainScene.Add(barrow);
             Core.MainScene.Add(playerTwo);
             Core.MainScene.Add(finish);
-
-
-
             menu.OnePlayerColections.Add(ball);
             menu.OnePlayerColections.Add(player);
             menu.OnePlayerColections.Add(center);
             menu.OnePlayerColections.Add(enemy);
             menu.OnePlayerColections.Add(barrow);
-
             menu.TwoPlayerColections.Add(ball);
             menu.TwoPlayerColections.Add(player);
             menu.TwoPlayerColections.Add(center);
             menu.TwoPlayerColections.Add(playerTwo);
             menu.TwoPlayerColections.Add(barrow);
-
-
             game.Run();
         }
     }
 
 
+}
 
-    }

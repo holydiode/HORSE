@@ -23,7 +23,6 @@ namespace HORSE
             Coord2d MousePosition = new Coord2d(Mouse.GetCursorState().X, Mouse.GetCursorState().Y);
             MousePosition.ScreenToScene();
 
-
             if (mouse[button])
             {
                 if (Core.CurrentObject.PointInObject(MousePosition)) { 

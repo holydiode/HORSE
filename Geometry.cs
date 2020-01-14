@@ -8,16 +8,18 @@ namespace HORSE
 {
     class Geometry
     {
+        //точки тела
         private List<Coord2d> points;
-
+        //левая граница тела
         private double leftBorder;
+        //правая граница тела
         private double rightBorder;
+        //верхняя граница тела
         private double upBorder;
+        //нижняя граница тела
         private double bottomBorder;
-        private double middleBorder;
-
+        //количество точек в полигоне
         private int complexity;
-        private readonly float X;
 
         public double LeftBorder { get => leftBorder; set => leftBorder = value; }
         public double RightBorder { get => rightBorder; set => rightBorder = value; }
@@ -31,22 +33,34 @@ namespace HORSE
             points = new List<Coord2d>();
         }
 
-
-        public void RegularPolygon(int a, double rad)
+        public void Add(Coord2d a)
         {
-            points.Clear();
+            this.points.Add(a);
+            this.complexity++;
+        }
 
-            for (int i = 0; i < a; i++)
-            {
-                points.Add(new Coord2d(rad * Math.Cos(i * 2 * Math.PI / a), rad * Math.Sin(i * 2 * Math.PI / a)));
-            }
-
-            RecountBorder();
-            this.complexity = a;
+        public void Add(List<Coord2d> a)
+        {
+            this.points.AddRange(a);
+            this.complexity += a.Count;
         }
 
 
+        //создание правильного n-угольника, вписаного в окружность радиуса rad
+        public void RegularPolygon(int n, double rad)
+        {
+            points.Clear();
 
+            for (int i = 0; i < n; i++)
+            {
+                points.Add(new Coord2d(rad * Math.Cos(i * 2 * Math.PI / n), rad * Math.Sin(i * 2 * Math.PI / n)));
+            }
+
+            RecountBorder();
+            this.complexity = n;
+        }
+
+        //создание прямоугольника, с вектор-диаганалью point
         public void Square(Coord2d point) {
             points.Clear();
 
@@ -54,16 +68,13 @@ namespace HORSE
             points.Add(new Coord2d(0, point.Y));
             points.Add(new Coord2d(0, 0));
             points.Add(new Coord2d(point.X, 0));
-
-
-
             RecountBorder();
-
             this.complexity = 4;
         }
 
 
-        public List<Coord2d> FindNearPoint(int count, Coord2d point)
+        // возвращает n ближайших точек к заданной точки point
+        public List<Coord2d> FindNearPoint(int n, Coord2d point)
         {
             List<Coord2d> nearPoint = new List<Coord2d>();
 
@@ -77,7 +88,7 @@ namespace HORSE
             sortedPoint.Sort((Coord2d a, Coord2d b) => { if (a.len(point) > b.len(point)) return 1; else return 0; });
 
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < n; i++)
             {
                 nearPoint.Add(sortedPoint[i]);
             }
@@ -85,7 +96,7 @@ namespace HORSE
             return nearPoint;
         }
 
-
+        // Находит ближайшую прямую к точке point со звигом move
         public List<Coord2d> FindNearStraight(Coord2d point, Coord2d move)
         {
 
@@ -106,7 +117,7 @@ namespace HORSE
             return straight;
         }
 
-
+        // Находит ближайшую прямую к точке point со звигом move и возвращает растояния межу точкой и прямой
         public List<Coord2d> FindNearStraight(Coord2d point, Coord2d move, out double leng)
         {
             List<Coord2d> straight = new List<Coord2d>();
@@ -162,18 +173,6 @@ namespace HORSE
 
 
 
-        public double[] GeometryToArrat()
-        {
-            double[] array = new double[this.complexity * 3];
-            int i = 0;
-            foreach (Coord2d point in this.points){
-                array[i*3] = point.X;
-                array[i*3 + 1] = point.Y;
-                array[i*3 + 2] = 0;
-                i++;
-            }
-            return array;
-        }
     }
 
 }

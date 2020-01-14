@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HORSE
 {
     class Scene
-    {
+    {   
         private List<GameObject> staticObjects;
         private List<Active> dinamicObjects;
         private List<Physics> physicsObjects;
@@ -20,7 +20,6 @@ namespace HORSE
             dinamicObjects = new List<Active>();
             physicsObjects = new List<Physics>();
             gravityObjects = new List<Gravitaiton>();
-
         }
 
         internal List<GameObject> StaticObjects { get => staticObjects; set => staticObjects = value; }

@@ -9,7 +9,7 @@ using OpenTK.Input;
 
 namespace HORSE
 {
-    class KeyBoardActity: Activity
+    abstract class KeyBoardActity: Activity
     {
         protected Key button;
         protected KeyboardState keyboard;

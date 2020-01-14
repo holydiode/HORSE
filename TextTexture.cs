@@ -17,11 +17,16 @@ namespace HORSE
 
     class TextTexture : Texture
     {
+        //содержание сторки
         private string title;
+        //размер шрифта в обсалютных координатах
         private int size;
+        //id текстуры
         private int ID;
 
+        //цвет текста
         private Color textColor;
+        //цвет заднего фона
         private Color fillColor;
 
 
@@ -59,8 +64,6 @@ namespace HORSE
 
         }
 
-
-
         public override void Drow()
         {
             while(this.ID == 0)
@@ -68,11 +71,7 @@ namespace HORSE
                 this.load();
             }
 
-            
-            
             GL.Enable(EnableCap.Texture2D);
-
-
 
             if (Core.CurrentObject.Parent != null && Core.CurrentObject.Parent.Texture is TextureFigure)
             {
@@ -98,8 +97,6 @@ namespace HORSE
         
             GL.End();
             GL.Disable(EnableCap.Texture2D);
-
-
         }
 
 

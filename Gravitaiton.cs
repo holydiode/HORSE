@@ -8,11 +8,12 @@ namespace HORSE
 {
     class Gravitaiton:Active
     {
+        //сила притяжения
         protected double power;
 
+        //способ взаимодействия
         public virtual void drug(Physics currentObject)
         {
-
         }
     }
 }

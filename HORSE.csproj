@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="Active.cs" />
     <Compile Include="Activity.cs" />
-    <Compile Include="Animation.cs" />
     <Compile Include="ColissionActivity.cs" />
     <Compile Include="Coord2d.cs" />
     <Compile Include="Coord3d.cs" />
