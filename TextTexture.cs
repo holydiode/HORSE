@@ -40,11 +40,11 @@ namespace HORSE
             fillColor = Color.White;
         }
 
-        public TextTexture(string title, int size)
+        public TextTexture(string title, double size)
         {
             ID = 0;
             this.title = title;
-            this.size = size;
+            this.size = (int)(size * Core.Height);
             startPoint = new Coord2d();
 
             textColor = Color.Black;
@@ -52,11 +52,11 @@ namespace HORSE
         }
 
 
-        public TextTexture(string title, int size, Color textColor, Color fillColor)
+        public TextTexture(string title, double size, Color textColor, Color fillColor)
         {
             ID = 0;
             this.title = title;
-            this.size = size;
+            this.size = (int)(size * Core.Height);
             startPoint = new Coord2d();
 
             this.textColor = textColor;
@@ -102,11 +102,15 @@ namespace HORSE
 
         public void load()
         {
-            Bitmap imagine = new Bitmap(title.Length * (int)(size * 0.85), (int)(size * 1.2));
+
+            Font font = new Font("Tempus Sans ITC", size, FontStyle.Bold);
+            Bitmap imagine = new Bitmap(title.Length * (int)(font.Size), (int)(size * 1.2));
+
+
             Graphics graphic = Graphics.FromImage(imagine);
             graphic.Clear(Color.White);
 
-            graphic.DrawString(this.title, new Font("Tempus Sans ITC", size, FontStyle.Bold), new SolidBrush(System.Drawing.Color.Black), 0, -size/4);
+            graphic.DrawString(this.title, font, new SolidBrush(System.Drawing.Color.Black), 0, -size/4);
 
 
             ID = GL.GenTexture();

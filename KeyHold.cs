@@ -14,11 +14,13 @@ namespace HORSE
         {
         }
 
+
         protected override bool Check()
         {
             keyboard = Keyboard.GetState();
             return (keyboard[button]);
         }
+
 
     }
 }

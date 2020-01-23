@@ -8,13 +8,9 @@ namespace HORSE
 {
     class Active:GameObject
     {
-
         private List<Activity> activities;
 
-
-
         internal List<Activity> Activities { get => activities; set => activities = value; }
-
 
 
         public Active() : base()
@@ -28,7 +24,7 @@ namespace HORSE
             activities.Add(activity);
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; }); ;
         }
-
+        
         //управление с видом сверху
         public void SetTopDownBehaivor(float speed)
         {
@@ -36,7 +32,6 @@ namespace HORSE
             activities.Add(new KeyHold("s", () => this.Position.Y -= speed));
             activities.Add(new KeyHold("a", () => this.Position.X -= speed));
             activities.Add(new KeyHold("d", () => this.Position.X += speed));
-
             activities.Sort((Activity a, Activity b) => { if (a < b) return -1; else return 1; });
         }
 
@@ -117,8 +112,5 @@ namespace HORSE
 
             }
         }
-
-
-
     }
 }

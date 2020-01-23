@@ -164,11 +164,8 @@ namespace HORSE
             ((TextureFigure)this.Texture).BorderColor = Color.Orange;
             this.SetBehavior(new FrameActivity(() => { this.Hitbox.Square(new Coord2d(0.005, -0.15 * UP / 100)); if (UP < 100) UP += 0.05; }));
             this.SetBehavior(new ShowActivity(() => { this.UP = 100; }));
-            
         }
     }
-
-
 
     class Center : GravityPoint
     {
@@ -199,7 +196,7 @@ namespace HORSE
                 this.children[i].Position = new Coord3d(0.1, -0.5 - 0.22 * i, 0);
 
             }
-            this.SetChild(new Text("POLIBIUS", 100));
+            this.SetChild(new Text("POLIBIUS", 0.1));
             this.children[3].Position = new Coord3d(0.1, -0.2, 0);
             ((Active)this.children[0]).SetBehavior(new OnClick("left", () =>
             {
@@ -209,7 +206,7 @@ namespace HORSE
                 }
                 this.Status = false;
             }));
-            this.children[0].SetChild(new Text("1 игрок", 90, Color.White, Color.Salmon));
+            this.children[0].SetChild(new Text("1 игрок", 0.1, Color.White, Color.Salmon));
             ((Active)this.children[1]).SetBehavior(new OnClick("left", () =>
             {
                 foreach (GameObject currentObject in TwoPlayerColections)
@@ -218,13 +215,13 @@ namespace HORSE
                 }
                 this.Status = false;
             }));
-            this.children[1].SetChild(new Text("2 игрока", 90, Color.White, Color.Salmon));
+            this.children[1].SetChild(new Text("2 игрока", 0.1, Color.White, Color.Salmon));
             ((Active)this.children[2]).SetBehavior(new OnClick("left", () =>
             {
                 Core.Window.Close();
             }));
 
-            this.children[2].SetChild(new Text("выход", 90, Color.White, Color.Salmon));
+            this.children[2].SetChild(new Text("выход", 0.1, Color.White, Color.Salmon));
         }
     }
 
@@ -260,15 +257,15 @@ namespace HORSE
                 startmenu.Status = true;
             }));
 
-            this.children[0].SetChild(new Text("далее", 90, Color.White, Color.Salmon));
+            this.children[0].SetChild(new Text("далее", 0.1, Color.White, Color.Salmon));
 
             ((Active)this.children[1]).SetBehavior(new OnClick("left", () =>
             {
                 Core.Window.Close();
             }));
-            this.children[1].SetChild(new Text("выход", 90, Color.White, Color.Salmon));
+            this.children[1].SetChild(new Text("выход", 0.1, Color.White, Color.Salmon));
 
-            this.SetChild(new Text("Конец игры", 100));
+            this.SetChild(new Text("Конец игры", 0.1));
             this.children[2].Position = new Coord3d(0.05, -0.2, 0);
 
         }
@@ -286,11 +283,11 @@ namespace HORSE
 
     class Text : GameObject
     {
-        public Text(string title, int size) : base( )
+        public Text(string title, double size) : base( )
         {
             this.Texture = new TextTexture(title, size);
         }
-        public Text(string title, int size, Color textColor, Color fillColor) : base()
+        public Text(string title, double size, Color textColor, Color fillColor) : base()
         {
             this.Texture = new TextTexture(title, size, textColor, fillColor);
         }
@@ -323,6 +320,7 @@ namespace HORSE
 
 
             Core.MainScene.Add(ball);
+            Core.MainScene.Add(player);
             Core.MainScene.Add(player);
             Core.MainScene.Add(enemy);
             Core.MainScene.Add(center);
